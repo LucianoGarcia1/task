@@ -33,6 +33,7 @@ export const UserHeader = () => {
         <button
           className="md:hidden text-medium transition-all"
           onClick={handleMenu}
+          title="menu"
         >
           {menu === "hidden" ? <MdOutlineMenu /> : <MdOutlineClose />}
         </button>
@@ -47,11 +48,19 @@ export const UserHeader = () => {
               Home
             </Link>
           </li>
+          <li>
+            <Link
+              href="/dashboard"
+              className="md:hover:pl-0 md:py-1 md:flex block py-3 transition-all hover:text-green hover:bg-white hover:pl-5 rounded-md"
+            >
+              Dashboard
+            </Link>
+          </li>
 
           <li className="md:ml-7">
             <Link
               href="/dashboard/profile"
-              className="border md:border-green md:text-green border-white text-white rounded-md py-3 px-5 flex items-center gap-4"
+              className="border md:border-green md:text-green border-white text-white rounded-md py-3 px-5 flex items-center gap-4 hover:bg-green hover:text-white transition-all"
             >
               Profile
               <span className="text-icon">

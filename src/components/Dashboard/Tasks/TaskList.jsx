@@ -1,26 +1,63 @@
 "use client";
+import { taskUpdateAction } from "@/actions/taskUpdateAction";
 import { db } from "@/services/firebaseConfig";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  orderBy,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 
-export const TaskList = () => {
-  const [task, setTask] = useState([]);
+export const TaskList = ({ folderId }) => {
+  const [tasks, setTasks] = useState([]);
+
   useEffect(() => {
-    const q = query(collection(db, "tasks"), orderBy("createdAt"));
+    const q = query(
+      collection(db, "tasks"),
+      where("folderId", "==", folderId),
+      orderBy("createdAt")
+    );
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const tasksArray = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setTask(tasksArray);
+      setTasks(tasksArray);
     });
+
     return () => unsubscribe();
-  }, []);
+  }, [folderId]);
+
+  const handleChecked = async (taskId, isChecked) => {
+    try {
+      const response = await taskUpdateAction(taskId, isChecked);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <ul className="w-full flex flex-col gap-4 mt-5">
-      {task.map((task) => (
-        <li key={task.id} className="bg-green py-5 rounded-md">
-          {task.task}
+      {tasks.map((task) => (
+        <li
+          key={task.id}
+          className={`p-5 rounded-md text-black flex items-center border border-black gap-5 transition-all ${
+            task.isCompleted && "bg-green text-white"
+          }`}
+        >
+          <input
+            type="checkbox"
+            className="h-10 w-10 cursor-pointer"
+            checked={task.isCompleted || false}
+            onChange={(e) => handleChecked(task.id, e.target.checked)}
+            title={`${task.isCompleted ? "Incomplete" : "Complete"}`}
+          />
+          <div>
+            <h3 className="text-medium">{task.task}</h3>
+            <p className="text-small">Complete in: {task.deliveryDate}</p>
+          </div>
         </li>
       ))}
     </ul>

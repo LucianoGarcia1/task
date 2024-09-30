@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 
-export const Form = ({ button, submit }) => {
+export const Form = ({ button, submit, title }) => {
   const {
     register,
     handleSubmit,
@@ -49,7 +49,10 @@ export const Form = ({ button, submit }) => {
           <p className="text-red text-small">{errors.password.message}</p>
         )}
       </label>
-      <button className="bg-green py-3 rounded-md text-white text-small">
+      <button
+        className="bg-green py-3 rounded-md text-white text-small"
+        title={title}
+      >
         {button}
       </button>
     </form>

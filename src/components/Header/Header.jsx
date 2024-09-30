@@ -33,6 +33,7 @@ export const Header = () => {
         <button
           className="md:hidden text-medium transition-all"
           onClick={handleMenu}
+          title="menu"
         >
           {menu === "hidden" ? <MdOutlineMenu /> : <MdOutlineClose />}
         </button>
@@ -59,7 +60,7 @@ export const Header = () => {
           <li className="md:ml-7">
             <Link
               href="/register"
-              className="border md:border-green md:text-green border-white text-white rounded-md py-3 px-5 flex items-center gap-4"
+              className="border md:border-green md:text-green border-white text-white rounded-md py-3 px-5 flex items-center gap-4 hover:bg-green hover:text-white transition-all"
             >
               Register
               <span className="text-icon">

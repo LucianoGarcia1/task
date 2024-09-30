@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/Header/Header";
 import { cookies } from "next/headers";
 import { UserHeader } from "@/components/Header/UserHeader";
+import { ContextProvider } from "@/context/useContext";
 const ubuntu = Ubuntu({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
@@ -18,9 +19,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={ubuntu.className}>
-        <div className="2xl:container w-full my-0 mx-auto">
-          {verify ? <UserHeader /> : <Header />} {children}
-        </div>
+        <ContextProvider>
+          <div className="2xl:container w-full my-0 mx-auto">
+            {verify ? <UserHeader /> : <Header />} {children}
+          </div>
+        </ContextProvider>
       </body>
     </html>
   );

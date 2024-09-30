@@ -9,10 +9,13 @@ import { cookies } from "next/headers";
 export const loginAction = async (email, password) => {
   try {
     const response = await signInWithEmailAndPassword(auth, email, password);
+    console.log(response);
 
     const token = response.user.stsTokenManager.accessToken;
+    const uidUser = response.user.uid;
 
     cookies().set("token", token, { httpOnly: true, secure: true });
+    cookies().set("uid", uidUser, { httpOnly: true, secure: true });
 
     return { success: true, token };
   } catch (e) {
