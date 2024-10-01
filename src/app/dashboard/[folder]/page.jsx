@@ -1,18 +1,15 @@
 import { ButtonPrevious } from "@/components/Button/ButtonPrevious";
 import FolderClient from "@/components/Dashboard/Folders/FolderClient";
 import { db } from "@/services/firebaseConfig";
+import { navigateString } from "@/utils/navigateString";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
-export default async function FolderPage({ params }) {
-  const uid = cookies().get("uid")?.value;
-  const { folder } = params;
-
-  const folderName = folder.replace(/-/g, " ");
+const getFolderData = async (slug, uid) => {
   const folderQuery = query(
     collection(db, "folders"),
-    where("name", "==", folderName),
+    where("slug", "==", slug),
     where("uid", "==", uid)
   );
   const response = await getDocs(folderQuery);
@@ -21,8 +18,32 @@ export default async function FolderPage({ params }) {
     notFound();
   }
 
-  const folderData = response.docs[0].data();
-  const folderId = response.docs[0].id;
+  return {
+    data: response.docs[0].data(),
+    id: response.docs[0].id,
+  };
+};
+
+export async function generateMetadata({ params }) {
+  const uid = cookies().get("uid")?.value;
+  const folderSlug = navigateString(params.folder);
+
+  const { data: folderData } = await getFolderData(folderSlug, uid);
+
+  return {
+    title: `${folderData.name} - Folder`,
+  };
+}
+
+export default async function FolderPage({ params }) {
+  const uid = cookies().get("uid")?.value;
+  const { folder } = params;
+  const folderSlug = navigateString(folder);
+
+  const { data: folderData, id: folderId } = await getFolderData(
+    folderSlug,
+    uid
+  );
 
   return (
     <main className="w-full flex flex-col p-5">

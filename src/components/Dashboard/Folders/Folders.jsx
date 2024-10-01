@@ -11,13 +11,12 @@ export const Folders = ({ folders }) => {
   }, [folders]);
   const handleDeleteFolder = async (id) => {
     try {
-      const response = await folderDeleteAction(id);
+      await folderDeleteAction(id);
       setFolderList((prev) => prev.filter((folder) => folder.id !== id));
     } catch (e) {
       console.error(e);
     }
   };
-
   return (
     <div className="w-full flex flex-wrap gap-4">
       {folderList.length > 0 ? (
@@ -26,13 +25,8 @@ export const Folders = ({ folders }) => {
             key={folder.id}
             className="lg:max-w-[420px] w-full p-4 border border-gray rounded-md flex items-start justify-between"
           >
-            <Link
-              href={`/dashboard/${folder.name.replace(/\s+/g, "-")}`}
-              className="w-full"
-            >
-              <h3 className="text-medium  text-black">
-                {folder.name}
-              </h3>
+            <Link href={`/dashboard/${folder.slug}`} className="w-full">
+              <h3 className="text-medium  text-black">{folder.name}</h3>
               <p className="text-small text-grayBig">
                 Created at: {new Date(folder.createdAt).toLocaleString()}
               </p>

@@ -20,6 +20,7 @@ export const folderRenderAction = async () => {
         id: doc.id,
         name: data.name,
         createdAt: data.createdAt,
+        slug: data.slug,
       };
     });
 

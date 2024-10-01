@@ -39,11 +39,11 @@ export const TaskList = ({ folderId }) => {
   };
 
   return (
-    <ul className="w-full flex flex-col gap-4 mt-5">
+    <ul className="w-full flex flex-wrap gap-4 mt-5">
       {tasks.map((task) => (
         <li
           key={task.id}
-          className={`p-5 rounded-md text-black flex items-center border border-black gap-5 transition-all ${
+          className={`lg:max-w-[420px] w-full p-5 rounded-md text-black flex items-center border border-black gap-5 transition-all ${
             task.isCompleted && "bg-green text-white"
           }`}
         >
@@ -55,7 +55,9 @@ export const TaskList = ({ folderId }) => {
             title={`${task.isCompleted ? "Incomplete" : "Complete"}`}
           />
           <div>
-            <h3 className="text-medium">{task.task}</h3>
+            <h3 className={`text-medium ${task.isCompleted && "line-through"}`}>
+              {task.task}
+            </h3>
             <p className="text-small">Complete in: {task.deliveryDate}</p>
           </div>
         </li>

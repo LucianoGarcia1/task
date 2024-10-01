@@ -3,7 +3,7 @@ import { db } from "@/services/firebaseConfig";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { cookies } from "next/headers";
 
-export const folderAddAction = async (folder) => {
+export const folderAddAction = async (folder, slug) => {
   try {
     const uid = cookies().get("uid").value;
 
@@ -24,6 +24,7 @@ export const folderAddAction = async (folder) => {
 
     const folderRef = await addDoc(collection(db, "folders"), {
       name: folder,
+      slug: slug,
       uid: uid,
       createdAt: new Date().toISOString(),
     });

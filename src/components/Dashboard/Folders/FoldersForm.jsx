@@ -1,5 +1,6 @@
 "use client";
 import { folderAddAction } from "@/actions/folderAddAction";
+import { navigateString } from "@/utils/navigateString";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -9,12 +10,13 @@ export const FolderForm = ({ folderRefresh }) => {
     handleSubmit,
     formState: { errors },
     reset,
-    setError, // Importa a função setError para definir manualmente erros no formulário
+    setError,
   } = useForm();
 
   const onSubmit = async ({ folder }) => {
     try {
-      const response = await folderAddAction(folder);
+      const slug = navigateString(folder);
+      const response = await folderAddAction(folder, slug);
       if (response.success) {
         folderRefresh();
         reset();
@@ -52,7 +54,6 @@ export const FolderForm = ({ folderRefresh }) => {
             },
           })}
         />
-        {/* Exibe a mensagem de erro no campo de input */}
         {errors.folder && (
           <p className="text-red text-small">{errors.folder.message}</p>
         )}
