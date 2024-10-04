@@ -54,7 +54,10 @@ export default async function FolderPage({ params }) {
             Created at: {""}
             {folderData.createdAt
               ? new Date(folderData.createdAt.seconds * 1000).toLocaleString(
-                  "pt-BR"
+                  "pt-BR",
+                  {
+                    timeZone: "America/Sao_Paulo",
+                  }
                 )
               : "Date not available"}
           </p>
