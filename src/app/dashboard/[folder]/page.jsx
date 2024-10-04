@@ -53,7 +53,9 @@ export default async function FolderPage({ params }) {
           <p className="text-small text-black">
             Created at: {""}
             {folderData.createdAt
-              ? new Date(folderData.createdAt.seconds * 1000).toLocaleString()
+              ? new Date(folderData.createdAt.seconds * 1000).toLocaleString(
+                  "pt-BR"
+                )
               : "Date not available"}
           </p>
         </div>
