@@ -1,6 +1,13 @@
 "use server";
 import { db } from "@/services/firebaseConfig";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  Timestamp,
+} from "firebase/firestore";
 import { cookies } from "next/headers";
 
 export const folderAddAction = async (folder, slug) => {
@@ -26,7 +33,7 @@ export const folderAddAction = async (folder, slug) => {
       name: folder,
       slug: slug,
       uid: uid,
-      createdAt: new Date().toISOString(),
+      createdAt: Timestamp.now(),
     });
 
     return { id: folderRef.id, success: true };

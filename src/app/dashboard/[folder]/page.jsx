@@ -51,7 +51,10 @@ export default async function FolderPage({ params }) {
         <div className="mb-8 md:mb-4 md:mt-0">
           <h1 className="text-big text-green">{folderData.name}</h1>
           <p className="text-small text-black">
-            Created at: {new Date(folderData.createdAt).toLocaleString()}
+            Created at: {""}
+            {folderData.createdAt
+              ? new Date(folderData.createdAt.seconds * 1000).toLocaleString()
+              : "Date not available"}
           </p>
         </div>
         <ButtonPrevious name="Go back" href="/dashboard" />
