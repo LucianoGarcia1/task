@@ -1,5 +1,7 @@
 "use client";
 import { taskAddAction } from "@/actions/taskAddAction";
+import { LoadingSubmit } from "@/components/utils/LoadingSubmit";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const TaskForm = ({ folderId, taskRefresh }) => {
@@ -10,13 +12,18 @@ export const TaskForm = ({ folderId, taskRefresh }) => {
     reset,
   } = useForm();
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async ({ task, date }) => {
+    setLoading(true);
     try {
-      const response = await taskAddAction({ task, date, folderId });
+      await taskAddAction({ task, date, folderId });
       taskRefresh();
       reset();
     } catch (e) {
       console.error("Erro Task", e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,10 +67,12 @@ export const TaskForm = ({ folderId, taskRefresh }) => {
         )}
       </label>
       <button
-        className="bg-green py-3 rounded-md text-white text-small"
+        className={`bg-green py-3 rounded-md text-white text-small transition-all ${
+          loading ? "opacity-90 cursor-not-allowed" : ""
+        }`}
         title="Task Add"
       >
-        Task add
+        {loading ? <LoadingSubmit /> : "Task Add"}
       </button>
     </form>
   );

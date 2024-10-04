@@ -1,5 +1,6 @@
 "use client";
 import { taskUpdateAction } from "@/actions/taskUpdateAction";
+import { LoadingPage } from "@/components/utils/LoadingPage";
 import { db } from "@/services/firebaseConfig";
 import {
   collection,
@@ -12,6 +13,7 @@ import { useEffect, useState } from "react";
 
 export const TaskList = ({ folderId }) => {
   const [tasks, setTasks] = useState([]);
+  const [Loading, setLoading] = useState(true);
 
   useEffect(() => {
     const q = query(
@@ -25,6 +27,8 @@ export const TaskList = ({ folderId }) => {
         ...doc.data(),
       }));
       setTasks(tasksArray);
+
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -32,11 +36,20 @@ export const TaskList = ({ folderId }) => {
 
   const handleChecked = async (taskId, isChecked) => {
     try {
-      const response = await taskUpdateAction(taskId, isChecked);
+      await taskUpdateAction(taskId, isChecked);
     } catch (e) {
       console.log(e);
     }
   };
+
+  const handleVerifyComplete = (deliveryDate) => {
+    const date = new Date();
+    return new Date(deliveryDate) < date;
+  };
+
+  if (Loading) {
+    return <LoadingPage />;
+  }
 
   return (
     <ul className="w-full flex flex-wrap gap-4 mt-5">
@@ -44,7 +57,11 @@ export const TaskList = ({ folderId }) => {
         <li
           key={task.id}
           className={`lg:max-w-[420px] w-full p-5 rounded-md text-black flex items-center border border-black gap-5 transition-all ${
-            task.isCompleted && "bg-green text-white"
+            task.isCompleted
+              ? "bg-green text-white"
+              : handleVerifyComplete(task.deliveryDate)
+              ? "bg-red text-white"
+              : null
           }`}
         >
           <input

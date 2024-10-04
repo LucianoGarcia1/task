@@ -5,7 +5,7 @@ import { doc, updateDoc } from "firebase/firestore";
 export const taskUpdateAction = async (taskId, isChecked) => {
   const taskRef = doc(db, "tasks", taskId);
   try {
-    const response = await updateDoc(taskRef, {
+    await updateDoc(taskRef, {
       isCompleted: isChecked,
     });
     return { success: true };

@@ -1,5 +1,6 @@
 "use client";
 import { folderAddAction } from "@/actions/folderAddAction";
+import { LoadingSubmit } from "@/components/utils/LoadingSubmit";
 import { navigateString } from "@/utils/navigateString";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,7 +14,10 @@ export const FolderForm = ({ folderRefresh }) => {
     setError,
   } = useForm();
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async ({ folder }) => {
+    setLoading(true);
     try {
       const slug = navigateString(folder);
       const response = await folderAddAction(folder, slug);
@@ -31,12 +35,14 @@ export const FolderForm = ({ folderRefresh }) => {
         type: "manual",
         message: e.message || "Error adding folder",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form
-      className="max-w-[400px] w-full flex flex-col gap-4"
+      className="max-w-[400px] w-full flex flex-col gap-4 transition-all"
       onSubmit={handleSubmit(onSubmit)}
     >
       <label className="flex flex-col gap-2 text-small">
@@ -59,10 +65,13 @@ export const FolderForm = ({ folderRefresh }) => {
         )}
       </label>
       <button
-        className="bg-green py-3 rounded-md text-white text-small"
+        className={`w-full bg-green py-3 rounded-md text-white text-small transition-all ${
+          loading ? "opacity-90 cursor-not-allowed" : null
+        }`}
         title="Create Folder"
+        disabled={loading}
       >
-        Add Folder
+        {loading ? <LoadingSubmit /> : "Add Folder"}
       </button>
     </form>
   );

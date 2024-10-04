@@ -1,7 +1,8 @@
 "use client";
 import { useForm } from "react-hook-form";
+import { LoadingSubmit } from "../utils/LoadingSubmit";
 
-export const Form = ({ button, submit, title }) => {
+export const Form = ({ button, submit, title, loading }) => {
   const {
     register,
     handleSubmit,
@@ -50,10 +51,13 @@ export const Form = ({ button, submit, title }) => {
         )}
       </label>
       <button
-        className="bg-green py-3 rounded-md text-white text-small"
+        className={`w-full bg-green py-3 rounded-md text-white text-small transition-all ${
+          loading ? "opacity-90 cursor-not-allowed" : null
+        }`}
         title={title}
+        disabled={loading}
       >
-        {button}
+        {loading ? <LoadingSubmit /> : button}
       </button>
     </form>
   );

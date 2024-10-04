@@ -54,7 +54,7 @@ export default async function FolderPage({ params }) {
             Created at: {new Date(folderData.createdAt).toLocaleString()}
           </p>
         </div>
-        <ButtonPrevious name="Return" href="/dashboard" />
+        <ButtonPrevious name="Go back" href="/dashboard" />
       </div>
 
       <FolderClient folderId={folderId} />

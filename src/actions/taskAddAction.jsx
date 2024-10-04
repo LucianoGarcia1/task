@@ -12,10 +12,8 @@ export const taskAddAction = async ({ task, date, folderId }) => {
       createdAt: new Date(),
     });
 
-    console.log("Task adicionada com ID: ", response.id);
     return { success: true, id: response.id };
   } catch (e) {
-    console.error("Erro ao adicionar task:", e.message);
     return { success: false, erro: e.message };
   }
 };
